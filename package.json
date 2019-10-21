@@ -1,0 +1,42 @@
+{
+  "_requiredBy": [
+    "/@moibitjs/matic"
+  ],
+  "author": "its-VSP",
+  "name": "@moibitjs/core",
+  "version": "0.1.0",
+  "description": "The Core module of moibitjs to interact with MoiBit off-chain Storage platform",
+  "main": "./src/sdk.js",
+  "scripts": {
+    "test": "jasmine tests/*.js"
+  },
+  "keywords": [
+    "off-chain",
+    "storage",
+    "moibit",
+    "js",
+    "core",
+    "sdk"
+  ],
+  "license": "",
+  "devDependencies": {
+    "jasmine": "^2.6.0",
+    "path": "^0.12.7",
+    "dotenv": "^8.1.0",
+    "form-data": "^2.5.1"
+  },
+  "dependencies": {
+    "axios": "^0.19.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moibit/core"
+  },
+  "bugs": {
+    "url": "https://github.com/moibit/core/issues"
+  },
+  "homepage": "https://github.com/moibit/core#readme"
+}
