@@ -1,3 +1,4 @@
+![MoiBit banner logo](https://raw.githubusercontent.com/moibit/logo-assets/master/logos/moibit-solo-banner.jpg)
 
 # @moibitjs/core
 
