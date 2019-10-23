@@ -1,17 +1,26 @@
 
 # @moibitjs/core
-> Core module of moibitjs to interact with [MoiBit](https://www.moibit.io) off-chain decentralized storage platform.
+
+[![npm version](https://badge.fury.io/js/%40moibitjs%2Fcore.svg)](https://badge.fury.io/js/%40moibitjs%2Fcore)
+[![Chat on Slack](https://img.shields.io/badge/Slack-MoiBit%20Slack%20community-blue)](https://join.slack.com/t/moibit/signup)
+[![Chat on Telegram](https://img.shields.io/badge/Telegram-MoiBit%20Telegram%20community-blue)](https://t.me/moibit)
+[![Follow us on Twitter](https://img.shields.io/badge/Twitter-MoiBit%20Twitter-blue?style=social&logo=twitter)](https://twitter.com/moibitio)
+
+Core module of MoiBitJS to interact with [MoiBit](https://www.moibit.io) off-chain decentralized storage platform.
 
 This library will help _**Authorized Dapp Developers**_ to store , read , delete , pin , unpin , detail the file(s) using MoiBit as their storage platform
 
 _Click [here](https://account.moibit.io) to get authorized  in MoiBit. You will be getting **API_KEY , API_SECRET , URL**_  after successful signup.
 
 ## Install
+
 Using npm:
 ```bash
 npm install --save @moibitjs/core
 ```
+
 ### Getting started
+
 ```js
 (async  => {
 	//import moibit core sdk
@@ -28,6 +37,7 @@ npm install --save @moibitjs/core
 ```
 
 ### Functions
+
 -  <a  href="#initialize"><code>new MoiBit()</code></a>
 -  <a  href="#addFile"><code>files.<b>add()</b></code></a>
 -  <a  href="#readFile"><code>files.<b>read()</b></code></a>
@@ -41,6 +51,7 @@ npm install --save @moibitjs/core
 ---
 
 <a  name="initialize"></a>
+
 #### new MoiBit(url,accessToken)
 
 This constructor is to wrap files module with url and access token , so that you don't need to send access token in every call. However authentication will be happen for every call.
@@ -52,6 +63,7 @@ let files = new MoiBit(<YOUR_URL>,{
 	API_SECRET : '<YOUR_API_SECRET>'
 });
 ```
+
 <a  name="addFile"></a>
 
 #### files.add(file,path,options)
@@ -92,8 +104,6 @@ Returns file in mentioned response type from its file name.
 await files.read('parent1/folder2/file3.txt','blob');
 ```
 
-  
-
 <a  name="readFromHash"></a>
 
 #### files.readFromHash(hash,responseType)
@@ -114,8 +124,6 @@ Returns file in mentioned response type from its hash.
 await files.readFromHash('Qmbg......','json');
 ```
 
-  
-
 <a  name="listFiles"></a>
 
 #### files.list(path)
@@ -128,8 +136,6 @@ Returns array of files within the folder mentioned.
 await files.list('parent1/folder2');
 ```
 
-  
-
 <a  name="removeFile"></a>
 
 #### files.remove(path)
@@ -140,9 +146,7 @@ Removes the file from MoiBit and returns back the acknowledgement
 
 ```js
 await files.remove('parent1/folder2/file2.txt');
-```
-
-  
+```  
 
 <a  name="pinFile"></a>
 
@@ -160,8 +164,6 @@ Pins the file in MoiBit , so that garbage Collector won't collect the file even 
 await files.pin({hash : 'QmAs...'})
 ```
 
-  
-
 <a  name="unpinFile"></a>
 
 #### files.unpin(options)
@@ -177,8 +179,6 @@ Unpins the pinned file in MoiBit , so that garbage Collector got the access to c
 ```js
 await files.unpin({filename : 'parent1/folder2/file3.txt'});
 ```
-
-  
 
 <a  name="filedetail"></a>
 
@@ -202,3 +202,15 @@ Returns all the storage details of the particular account (you did init with) in
 await files.storageDetails('mb');
 ```
 
+## Maintainers
+
+1. [Vuppala Sai Prashanth](https://github.com/its-VSP)
+2. [Arunprakash](https://github.com/Arunprakash1414)
+
+## Review and code standards
+
+1. Ganesh Prasad Kumble
+
+## Support
+
+If you need more clarifications, feel free to join our Telegram or Slack community channels. You can also write us an email at [hello@moibit.io](mailto:hello@moibit.io)
