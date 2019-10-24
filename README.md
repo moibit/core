@@ -56,7 +56,7 @@ npm install --save @moibitjs/core
 #### new MoiBit(url,accessToken)
 
 This constructor is to wrap files module with url and access token , so that you don't need to send access token in every call. However authentication will be happen for every call.
--  <code>url</code> DNS/IP address of the node where MoiBit API is running
+-  <code>url</code> the url you got after signup
 -  <code>accessToken</code> is an object with _API_KEY_ and _API_SECRET_ as keys
 ```js
 let files = new MoiBit(<YOUR_URL>,{
@@ -115,11 +115,9 @@ Returns file in mentioned response type from its hash.
 
 - `responseType` can be anything among
 
-- _arraybuffer , document , json , text , stream_
+	- _arraybuffer , document , json , text , stream_
 
-- _blob - browser only_
-
-  
+	- _blob - browser only_
 
 ```js
 await files.readFromHash('Qmbg......','json');
@@ -157,9 +155,9 @@ Pins the file in MoiBit , so that garbage Collector won't collect the file even 
 
 - `options`
 
-- `filename` absolute file name
+	- `filename` absolute file name
 
-- `hash` is the multihash of the file
+	- `hash` is the multihash of the file
 
 ```js
 await files.pin({hash : 'QmAs...'})
@@ -173,9 +171,9 @@ Unpins the pinned file in MoiBit , so that garbage Collector got the access to c
 
 - `options`
 
-- `filename` absolute file name
+	- `filename` absolute file name
 
-- `hash` is the multihash of the file
+	- `hash` is the multihash of the file
 
 ```js
 await files.unpin({filename : 'parent1/folder2/file3.txt'});
@@ -215,3 +213,7 @@ await files.storageDetails('mb');
 ## Support
 
 If you need more clarifications, feel free to join our Telegram or Slack community channels. You can also write us an email at [hello@moibit.io](mailto:hello@moibit.io)
+
+## License
+
+[GNU General Public License v3.0](https://github.com/moibit/core/blob/master/LICENSE)
