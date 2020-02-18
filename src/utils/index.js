@@ -4,10 +4,10 @@ module.exports = {
     isDefined : require('./isDef'),
     isUrl : require('./isUrl'),
     isValidUnit : require('./isValidUnit'),
-    makeObjectGoCompactable : require('./makeOptionsGoCompactable'),
     streamReader : require('./stream-reader'),
     parseBaseUrl : function(baseUrl) {
         const _constants = require('../constants') 
         return (baseUrl + _constants.MoibitPath)
-    }
+    },
+    getFilesOfFolder : require('./getFilesOfFolder')
 }

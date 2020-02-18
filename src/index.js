@@ -9,8 +9,8 @@ function MoiBit(baseUrl,accessToken) {
         moiBitError.assertUndefinedError('accessToken')
     }
     this._fileApi = new ApiClient(Utils.parseBaseUrl(baseUrl),accessToken)
-    this._assertError = require('./errors')
-    this._util = require('./utils'),
+    this._assertError = moiBitError
+    this._util = Utils,
     this._constant = require('./constants')
 }
 

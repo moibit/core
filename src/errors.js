@@ -1,5 +1,11 @@
 module.exports = {
     assertUndefinedError : function(parameter) {
-        return new Error(parameter+' cannot be undefined')
+        throw new Error(parameter+' cannot be undefined')
+    },
+    assertPinCaseUndefinedError : function() {
+        throw new Error('Both options.hash and options.fileName cannot be undefined')
+    },
+    assertPinCaseUndefinedError : function(unit) {
+        throw new Error("`"+unit+"` not a valid shorthand storage unit")
     }
 }
