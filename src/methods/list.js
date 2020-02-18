@@ -3,14 +3,14 @@
  * @return {Object} result - list of files inside specified folder
  */
 module.exports = async function(path) {
-    if(!isDef(path)) {
+    if(!this._util.isDefined(path)) {
         path = '/'
     }
     const payload = {
         path : path
     }
     try {
-        return await this.fileApi.send('POST','listfiles',payload)
+        return await this._fileApi.send('POST','listfiles',payload)
     }
     catch(e) {
         return e

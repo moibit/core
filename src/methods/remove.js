@@ -6,15 +6,15 @@
  * @return {Object} response - Returns the path of the file or folder removed.
 */
 module.exports = async function(path,options) {
-    if(!isDef(path)) {
-        notDefinedError('path')
+    if(!this._util.isDefined(path)) {
+        this._assertError.assertUndefinedError('path')
     }
     let payload = {
         path : path,
-        ...makeOptionsGoCompactable(options)
+        ...options
     }
     try {
-        return await this.fileApi.send('POST','remove',payload)
+        return await this._fileApi.send('POST','remove',payload)
     }catch(e) {
         return e
     }

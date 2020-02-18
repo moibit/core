@@ -7,21 +7,20 @@
  * @return {Object} result - Returns an MoiBit file object or error
 */
 module.exports = async function(file,options={}) {
-    if(!isDef(file)) {
-        throw new Error('File cannot be undefined')
+    if(!this._util.isDefined(file)) {
+        this._assertError.assertUndefinedError('file')
     }
-    const fileOptions = makeOptionsGoCompactable(options);
     if (typeof window !== 'undefined') {
         var form = new FormData()
         form.append('file',file)
         form.append('fileName','/'+fileOptions.fileName || '/'+file.name)
-        form.append('createFolders',fileOptions.createFolders || 'true')
-        form.append('pinVersion',fileOptions.pinVersion || 'false')
-        return await this.fileApi.send('POST','writefile',form)
+        form.append('createFolders',fileOptions.createFolders || true)
+        form.append('pinVersion',fileOptions.pinVersion || false)
+        return await this._fileApi.send('POST','writefile',form)
     }
     else {
         return {
-            Message : Constants.NonBrowserWarning
+            Message : this._constant.NonBrowserWarning
         }
     }
 }

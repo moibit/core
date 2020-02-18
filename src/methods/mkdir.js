@@ -3,14 +3,14 @@
  * @return {Object} result - acknowledge the mkdir request
  */
 module.exports = async function(path) {
-    if(!isDef(path)) {
-        notDefinedError('path')
+    if(!this._util.isDefined(path)) {
+        this._assertError.assertUndefinedError('path')
     }
     const payload = {
         path : path
     }
     try {
-        return await this.fileApi.send('GET','makedir',payload)
+        return await this._fileApi.send('GET','makedir',payload)
     }
     catch(e) {
         return e

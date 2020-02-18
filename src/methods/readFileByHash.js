@@ -7,14 +7,14 @@
     * @return {Object} result - Returns content of the file else error
 */
 module.exports = async function(hasH,responseType) {
-    if(!isDef(hasH)) {
-        notDefinedError('Hash')
+    if(!this._util.isDefined(hasH)) {
+        this._assertError.assertUndefinedError('Hash')
     }
     let payload = {
         hash : hasH
     }
     try {
-        return await this.fileApi.send('POST','readfilebyhash',payload,responseType)
+        return await this._fileApi.send('POST','readfilebyhash',payload,responseType)
     }catch(e) {
         return e
     }

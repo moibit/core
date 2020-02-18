@@ -1,3 +1,5 @@
+const FormData = require('form-data');
+const axios = require('axios');
 /**
  * @param {Object} path absolute path of folder in local fs
  * @param {Object} options optional attributes while adding the file
@@ -7,24 +9,27 @@
 */
 module.exports = async function(path,options={}) {
     if (typeof window === 'undefined') {
-        if(!isDef(path)) {
-            notDefinedError('path')
+        if(!this._util.isDefined(path)) {
+            this._assertError.assertUndefinedError('path')
         }
         var form = new FormData();
-        const folderFromFs = require('./utils/getStreamFromFs')(path);
-        form.append('dirData',folderFromFs);
+        const filesArrayWithStreams = this._util.getFilesOfFolder(path);
+        for(let separateStream of filesArrayWithStreams) {
+            form.append('dirData',separateStream);
+        }
         if(options.path !== undefined) {
             form.append('path',options.path)
         }
         form.append('pinVersion',options.pinVersion || false)
+
         try {
-            return await this.fileApi.send('POST','writefiles',form,{injectFormHeaders : true})
+            await this._fileApi.send('POST','writefiles',form,{injectFormHeaders : true})
         }catch(e) {
-            return e;
+            return e
         }
     } else {
         return {
-            Message : Constants.BrowserWarning
+            Message : this._constant.BrowserWarning
         }
     }
 }

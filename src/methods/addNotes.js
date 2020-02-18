@@ -7,27 +7,27 @@
  ** @optionalParam pinVersion - Default: "false"
  */
 module.exports =  async function(notes,path,options={}) {
-    if(!isDef(notes)) {
-        Errors.notDefinedError('notes');
+    if(!this._util.isDefined(notes)) {
+        this._assertError.assertUndefinedError('notes')
     }
-    if(!isDef(path)) {
-        Errors.notDefinedError('path');
+    if(!this._util.isDefined(path)) {
+        this._assertError.assertUndefinedError('path')
     }
     if(typeof notes === 'string') {
         let notesPayload = {
             fileName : path,
             text : notes,
-            ...makeOptionsGoCompactable(options)
+            ...options
         }
         try {
-            return (await this.fileApi.send('POST','writetexttofile',notesPayload))
+            return (await this._fileApi.send('POST','writetexttofile',notesPayload))
 
         }catch(e) {
             return e;
         }
     }else {
         return {
-            Message : Constants.NonStringNotAllowed
+            Message : this._constant.NonStringNotAllowed
         }
     }
 }

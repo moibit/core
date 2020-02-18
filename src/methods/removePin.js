@@ -5,22 +5,22 @@
  * @return {Object} response - An object containing the hash that has been un pinned.
 */
 module.exports = async function(options) {
-    var unpinningObject
-    if(!isDef(options.hash) && !isDef(options.fileName)) {
-        throw new Error('Both options.hash and options.fileName cannot be undefined')
+    var unpinningObject;
+    if(!this._util.isDefined(options.hash) && !this._util.isDefined(options.fileName)) {
+        this._assertError.assertPinCaseUndefinedError()
     }
-    else if(isDef(options.hash)) {
+    else if(this._util.isDefined(options.hash)) {
         unpinningObject = {
             hash : options.hash
         }
     } 
-    else if(isDef(options.filename)) {
+    else if(this._util.isDefined(options.fileName)) {
         unpinningObject = {
             fileName : options.fileName
         }
     }
     try {
-        return await this.fileApi.send('POST','addpin',unpinningObject)
+        return await this._fileApi.send('POST','addpin',unpinningObject)
     }catch(e) {
         return e
     }

@@ -3,14 +3,14 @@
  * @return {Object} result - complete detail of file or folder
  */
 module.exports = async function(path) {
-    if(!isDef(path)) {
-        notDefinedError('path')
+    if(!this._util.isDefined(path)) {
+        this._assertError.assertUndefinedError('path')
     }
     const payload = {
         path : path
     }
     try {
-        return await this.fileApi.send('POST','filestatus',payload)
+        return await this._fileApi.send('POST','filestatus',payload)
     }
     catch(e) {
         return e

@@ -6,21 +6,21 @@
 */
 module.exports = async function(options) {
     var pinningObject
-    if(!isDef(options.hash) && !isDef(options.fileName)) {
-        throw new Error('Both options.hash and options.fileName cannot be undefined')
+    if(!this._util.isDefined(options.hash) && !this._util.isDefined(options.fileName)) {
+        this._assertError.assertPinCaseUndefinedError()
     }
-    else if(isDef(options.hash)) {
+    else if(this._util.isDefined(options.hash)) {
         pinningObject = {
             hash : options.hash
         }
     } 
-    else if(isDef(options.filename)) {
+    else if(this._util.isDefined(options.fileName)) {
         pinningObject = {
             fileName : options.fileName
         }
     }
     try {
-        return await this.fileApi.send('POST','addpin',pinningObject)
+        return await this._fileApi.send('POST','addpin',pinningObject)
     }catch(e) {
         return e
     }
