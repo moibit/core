@@ -53,7 +53,6 @@ module.exports = class {
             requiredResponseType = 'json'
         }
         if(isDef(options.injectFormHeaders)) {
-
             if(options.injectFormHeaders) {
                 authenticatedHeaders = {
                     ...payload.getHeaders(),
