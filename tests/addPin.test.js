@@ -8,10 +8,10 @@ describe('addpin',function() {
             let streamReader = require('../src/utils/stream-reader')
             streamReader(sampleFilePath, async (err,content) => {
                 if(err) return
-                let result = await this._sdk.pin({
+                let result = await this._sdk.addPin({
                     hash : content.toString()
                 })
-                bool = result
+                bool = result.data.meta['code'] === 200
                 console.log("Added pin to `"+content.toString()+"`\n")
                 expect(bool).toBe(true)
                 done()
@@ -27,13 +27,14 @@ describe('addpin',function() {
     it(": this case is to pin an non - existing file object with its filename", async function() {
         var bool = false
         try {
-            await this._sdk.pin({
-                filename : 'README2.md'
+            let result = await this._sdk.addPin({
+                fileName : '/README2.md'
             })
+            bool = result.body.meta['code'] === 404
+            console.log("Negative Case : Trying to pin the file called `README2.md` which is not existing returns 404\n")
         }   
         catch(e) {
-            console.log("Negative Case : Trying to pin the file called `README2.md` which is not existing returns 404\n")
-            bool = e.status === 404
+            console.log(e);
         }
         expect(bool).toBe(true)
     })

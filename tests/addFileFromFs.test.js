@@ -1,5 +1,5 @@
-describe('addFromFs',function() {
-    it(": this case is to add a file to MoiBit which is browser compactable",async function() {
+describe('addFileFromFs',function() {
+    it(": this case is to add a file to MoiBit from local fs",async function() {
         var bool = false
         try {
             if (typeof window !== 'undefined') {
@@ -10,17 +10,18 @@ describe('addFromFs',function() {
                 var path = require('path');
                 const sampleFilePath = path.join(process.cwd(),'/test.txt');
 
-                let res = await this._sdk.addFromFs(sampleFilePath)
+                let res = await this._sdk.addFileFromFs(sampleFilePath)
 
                 /* creating temporary file that stores hash */
                 const sampleCreatePath = path.join(process.cwd(),'/test_hash.txt')
                 var writeStream = fs.createWriteStream(sampleCreatePath)
-                writeStream.write(res['Hash'])
+                const hasH = res.data.data['Hash'];
+                writeStream.write(hasH)
                 writeStream.end()
 
 
                 console.log("File called `test.txt` added to MoiBit \n")
-                bool = res['Hash'] !== undefined
+                bool = hasH !== undefined
             }
         }   
         catch(e) {
