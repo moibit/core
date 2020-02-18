@@ -1,7 +1,17 @@
 var ApiClient = require('./apiClient');
-
+var moiBitError = require('./errors');
+var Utils = require('./utils');
 function MoiBit(baseUrl,accessToken) {
-    this.fileApi = new ApiClient(baseUrl+'/moibit/v0',accessToken)
+    if(!Utils.isDefined(baseUrl)) {
+        moiBitError.assertUndefinedError('baseUrl')
+    }
+    if(!Utils.isDefined(accessToken)) {
+        moiBitError.assertUndefinedError('accessToken')
+    }
+    this._fileApi = new ApiClient(Utils.parseBaseUrl(baseUrl),accessToken)
+    this._assertError = require('./errors')
+    this._util = require('./utils'),
+    this._constant = require('./constants')
 }
 
 MoiBit.prototype.addFile = require('./methods/addFile')
@@ -33,3 +43,5 @@ MoiBit.prototype.remove = require('./methods/remove')
 MoiBit.prototype.removePin = require('./methods/removePin')
 
 MoiBit.prototype.storageUsed = require('./methods/storageUsed')
+
+module.exports = MoiBit

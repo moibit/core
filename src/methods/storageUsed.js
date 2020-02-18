@@ -1,4 +1,4 @@
-const isValidUnit = require('./utils/isValidUnit');
+const isValidUnit = require('../utils/isValidUnit');
 /**
  * @param {string} path - path of folder hierarchy you want to create
  * @return {Object} result - acknowledge the mkdir request
