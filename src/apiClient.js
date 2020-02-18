@@ -30,7 +30,8 @@ module.exports = class {
      * @return {Promise} - Returns a Promise , when fulfilled, will either return an JSON Object with the requested
      * data or an Error with the reason.
      */
-    send(method, url, payload = {},responseType) {
+    send(method, url, payload = {},options={}) {
+        let requiredResponseType;
         let requestedRoute = (this.baseUrl+'/'+url).trim()
         let authenticatedHeaders = {}
 
@@ -48,21 +49,27 @@ module.exports = class {
             })
             requestedRoute = requestedRoute + str
         }
-        if(!isDef(responseType)) {
-            responseType = 'json'
+        if(!isDef(options.responseType)) {
+            requiredResponseType = 'json'
+        }
+        if(isDef(options.injectFormHeaders)) {
+
+            if(options.injectFormHeaders) {
+                authenticatedHeaders = {
+                    ...payload.getHeaders(),
+                    ...authenticatedHeaders
+                }
+            }
         }
         return axios({
             url : requestedRoute, 
             method : method,
             data: payload,
             headers : authenticatedHeaders,
-            responseType : responseType
+            responseType : requiredResponseType
         })
         .then((response) => {
-            if (response.status >= 200 && response.status <= 202) { //succeeded request
-                return Promise.resolve(response)
-            }
-            return {}
+            return Promise.resolve(response)
         })
         .catch(e => {
             if(isDef(e.response)) {

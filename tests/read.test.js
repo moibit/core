@@ -1,5 +1,5 @@
 describe('read',function() {
-    it(": this case is to read a existing file from KFS using its name",async function() {
+    it(": this case is to read a existing file from MoiBit using its name",async function() {
         var bool = false
         try {
             let result = await this._sdk.read('test.txt')
@@ -13,7 +13,7 @@ describe('read',function() {
         }
         expect(bool).toBe(true)
     })
-    it(": this case is to read a non - existing file from KFS using its name",async function() {
+    it(": this case is to read a non - existing file from MoiBit using its name",async function() {
         var bool = false
         try {
             await this._sdk.read('test1.txt')
@@ -28,7 +28,7 @@ describe('read',function() {
 
 
 describe('readFromHash',function() {
-    it(": this case is to read a existing file from KFS using its hash",function(done) {
+    it(": this case is to read a existing file from MoiBit using its hash",function(done) {
         var bool = false
         try {
             var path = require('path')

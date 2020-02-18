@@ -1,30 +1,33 @@
 var ApiClient = require('./apiClient')
 var isDef = require('./utils/isDef')
-const axios = require('axios')
 var FormData = require('form-data')
+const Constants = require('./utils/constants');
+const Errors = require('./errors');
+const makeOptionsGoCompactable = require('./utils/makeOptionsGoCompactable');
 module.exports = class {
 
     /**
      * @constructor initializes and provides api client for crud operations
     */
     constructor(baseUrl,accessToken) {
-        this.fileApi = new ApiClient(baseUrl+'/moibit',accessToken)
+        this.fileApi = new ApiClient(baseUrl+'/moibit/v0',accessToken)
     }
     
     /**
      * @param {Object} file it is an file object that contains name,size etc of the file
      * @param {string} filePath path of the file at where file to be inserted
      * @param {Object} options optional attributes while adding the file
-     * @return {Object} result - Returns an kfs file object or error
+     * @return {Object} result - Returns an MoiBit file object or error
      */
-    async add(file,filePath,options={}) {
-        if(!isDef(filePath)) {
-            throw new Error('File Path cannot be undefined')
+    async add(file,options={}) {
+        if(!isDef(file)) {
+            throw new Error('File cannot be undefined')
         }
+
         if (typeof window !== 'undefined') {
             var form = new FormData()
             form.append('file',file)
-            form.append('fileName','/'+filePath)
+            form.append('fileName','/'+options.moibitPath || '/'+file.name)
             form.append('createFolders',options.createFolders || true)
             form.append('pinVersion',options.pinVersion || false)
             let res = await this.fileApi.send('POST','writefile',form)
@@ -35,31 +38,74 @@ module.exports = class {
                 return res
             }
         }
-        else {  
-            var form = new FormData()
-            form.append('file',file)
-            form.append('fileName','/'+filePath)
-            let res = await axios({
-                url : this.fileApi.baseUrl+'/writefile',
-                method : 'POST',
-                headers : {
-                    ...form.getHeaders(),
-                    "api_key" : this.fileApi.accessToken.public,
-                    "api_secret" : this.fileApi.accessToken.secret
-                },
-                data : form
-            })
-            if(res.status === 200) {
-                return res.data.data
+        else {
+            return {
+                Message : Constants.NonBrowserWarning
             }
-            else {
-                return res
+        }
+    }
+
+    async addFromFs(path,options={}) {
+        let actualFileName = path.split('/');
+        if(!isDef(path)) {
+            notDefinedError('path')
+        }
+        var form = new FormData();
+        const fileFromFs = require('./utils/getStreamFromFs')(path);
+        form.append('file',fileFromFs);
+        form.append('fileName',options.moibitPath || '/'+actualFileName[actualFileName.length-1]);
+        if (typeof window === 'undefined') {
+            try {
+                let res = await this.fileApi.send('POST','writefile',form,{injectFormHeaders : true})
+                if(res.status === 200) {
+                    return res.data.data
+                }
+                else {
+                    return res
+                }
+            }catch(e) {
+                return e;
+            }
+        }
+        else {
+            return {
+                Message : Constants.BrowserWarning
             }
         }
     }
 
     /**
-     * @param {string} filename complete path of the fil
+     * @param {String|Object} notes - can be string or stringified JSON
+     * @param {String} moibitPath - path where this file to be inserted in user space
+     * @param {Object} options
+     * - create - Create a new file if the file to which string content needs to be appended does not exist. Default: "false"
+     * - createFolders - Create folders as needed. Otherwise, if a path specified in fileName does not exist, the operation will fail. Default:"true"
+     * - pinVersion - Default: "false"
+     */
+    async addNotes(notes,moibitPath,options={}) {
+        if(!isDef(notes)) {
+            Errors.notDefinedError('notes');
+        }
+        if(!isDef(moibitPath)) {
+            Errors.notDefinedError('path');
+        }
+        if(typeof notes === 'string') {
+            let notesPayload = {
+                fileName : moibitPath,
+                text : notes,
+                ...makeOptionsGoCompactable(options)
+            }
+            try {
+                return (await this.fileApi.send('POST','writetexttofile',notesPayload)).data.data
+    
+            }catch(e) {
+                return e;
+            }
+        }
+    }
+
+    /**
+     * @param {string} filename absolute moibit path of the file
      * @param responseType indicates the type of data that the server will respond with
      * options are: 'arraybuffer', 'document', 'json', 'text', 'stream'
      * browser only: 'blob'
