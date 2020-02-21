@@ -6,18 +6,7 @@ describe('addFile',function() {
                 bool = true
             }
             else {
-                var fs = require('fs');
-                var path = require('path');
-                const sampleFilePath = path.join(process.cwd(),'/test.txt');
-
-                /* creating temporary file that stores hash */
-                var writeStream = fs.createWriteStream(sampleFilePath);
-                writeStream.write('This file is to support testing the add function in MoiBit SDK');
-                writeStream.end();
-
-                let res = await this._sdk.addFile(writeStream)
-                
-                /* creating temporary file that stores hash */
+                let res = await this._sdk.addFile(this._testFilePath)                
                 bool = res.Message !== undefined
             }
         }   
@@ -37,14 +26,14 @@ describe('addFolder',function() {
             }
             else {
                 var fs = require('fs');
-                var path = require('path');
-                const sampleFolderPath = path.join(process.cwd(),'/test_folder');
-                
-                fs.mkdir(sampleFolderPath,err => {
+
+                /* preparing test_folder */
+                fs.mkdir(this._testFolderPath,err => {
                     if(err) console.log(err)
                 });
+                this._sdk._util.writeToFile(this._testFolderPath+'/test-file1.txt','This is the second file in testFolder for testing addFolderFromFs functionality in MoiBit SDK');
 
-                let res = await this._sdk.addFolder(sampleFolderPath)
+                let res = await this._sdk.addFolder(this._testFolderPath)
                 bool = res.Message !== undefined
             }
         }   

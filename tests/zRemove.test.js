@@ -3,9 +3,8 @@ describe('remove',function() {
         var bool = false
         try {
             let result = await this._sdk.remove('/test.txt',{allVersions : true})
-            console.log(result);
+            await this._sdk.remove('/newTestFile.txt',{allVersions : true})
             bool = result.data.meta['code'] === 200
-            console.log('File called `test.txt` removed successfully \n')
         }   
         catch(e) {
             console.log(e)
@@ -16,6 +15,8 @@ describe('remove',function() {
         var bool = false
         try {
             let result = await this._sdk.remove('/node_modules',{recursive : true});
+            await this._sdk.remove('/myAwesomeDirectory',{recursive : true});
+            await this._sdk.remove('/testFolder',{recursive : true});
             bool = result.data.meta['code'] === 200
         }   
         catch(e) {

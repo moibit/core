@@ -3,8 +3,6 @@ describe('list',function() {
         var bool = false
         try {
             let result = await this._sdk.list()
-            console.log('List of files under root : \n')
-            console.log(result.data.data)
             bool = result !== undefined
         }   
         catch(e) {

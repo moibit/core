@@ -1,4 +1,4 @@
-describe('fileStats',function() {
+describe('mkdir',function() {
     it(": this case is to create empty folder in moibit",async function() {
         var bool = false
         try {

@@ -3,16 +3,13 @@ describe('addpin',function() {
     it(": this case is to pin an existing file object with its hash", async function(done) {
         var bool = false
         try {
-            var path = require('path')
-            const sampleFilePath = path.join(process.cwd(),'/test_hash.txt')
             let streamReader = require('../src/utils/stream-reader')
-            streamReader(sampleFilePath, async (err,content) => {
+            streamReader(this._testFileHashPath, async (err,content) => {
                 if(err) return
                 let result = await this._sdk.addPin({
                     hash : content.toString()
                 })
                 bool = result.data.meta['code'] === 200
-                console.log("Added pin to `"+content.toString()+"`\n")
                 expect(bool).toBe(true)
                 done()
             })
