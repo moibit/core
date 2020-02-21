@@ -1,5 +1,5 @@
 module.exports = {
-    deleteTemporaryFile : require('./delTempfile'),
+    deleteTestFiles : require('./deleteTestFiles'),
     getStreamFromPath : require('./getStreamFromFs'),
     isDefined : require('./isDef'),
     isUrl : require('./isUrl'),
@@ -9,5 +9,6 @@ module.exports = {
         const _constants = require('../constants') 
         return (baseUrl + _constants.MoibitPath)
     },
-    getFilesOfFolder : require('./getFilesOfFolder')
+    getFilesOfFolder : require('./getFilesOfFolder'),
+    writeToFile : require('./writeStringToFile')
 }
