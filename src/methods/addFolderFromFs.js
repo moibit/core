@@ -1,5 +1,5 @@
 const FormData = require('form-data');
-const axios = require('axios');
+const fs = require('fs');
 /**
  * @param {Object} path absolute path of folder in local fs
  * @param {Object} options optional attributes while adding the file
@@ -10,20 +10,23 @@ const axios = require('axios');
 module.exports = async function(path,options={}) {
     if (typeof window === 'undefined') {
         if(!this._util.isDefined(path)) {
-            this._assertError.assertUndefinedError('path')
+            this._assertError.assertUndefinedError('Local path')
         }
-        var form = new FormData();
-        const filesArrayWithStreams = this._util.getFilesOfFolder(path);
-        for(let separateStream of filesArrayWithStreams) {
-            form.append('dirData',separateStream);
-        }
-        if(options.path !== undefined) {
-            form.append('path',options.path)
-        }
-        form.append('pinVersion',options.pinVersion || false)
-
         try {
-            await this._fileApi.send('POST','writefiles',form,{injectFormHeaders : true})
+            /* Getting actual folder name that user intented to upload */
+            const actualFolderName = '/'+path.split('/').splice(-1)[0];
+
+            let form = new FormData();
+            let filesOfFolder = await this._util.getFilesOfFolder(path);
+            for (const file of filesOfFolder) {
+                form.append('dirData',fs.createReadStream(path+'/'+file),actualFolderName+"/"+file);
+            }
+
+            form.append('path',options.path || actualFolderName);
+            if(this._util.isDefined(options.path)) {
+                form.append('pinVersion',options.path ? 'true' : !options.path ? 'false' : options.path);     
+            }
+            return await this._fileApi.send('POST','writefiles',form,{injectFormHeaders : true})
         }catch(e) {
             return e
         }

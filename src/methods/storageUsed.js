@@ -1,6 +1,5 @@
 /**
- * @param {string} path - path of folder hierarchy you want to create
- * @return {Object} result - acknowledge the mkdir request
+ * @param {String} unit - In what storage unit you want the storage details
 */
 module.exports = async function(unit) {
     if(!this._util.isDefined(unit)) {

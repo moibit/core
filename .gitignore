@@ -1,4 +1,5 @@
 /node_modules
+test_folder
 .env
 package-lock.json
 test_hash.txt
