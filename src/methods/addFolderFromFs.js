@@ -17,10 +17,14 @@ module.exports = async function(path,options={}) {
             const actualFolderName = '/'+path.split('/').splice(-1)[0];
 
             let form = new FormData();
-            let filesOfFolder = await this._util.getFilesOfFolder(path);
-            for (const file of filesOfFolder) {
-                form.append('dirData',fs.createReadStream(path+'/'+file),actualFolderName+"/"+file);
+            let allFilesOfFolder = await this._util.getFilesOfFolder(path);
+
+            for (const filePath of allFilesOfFolder) {
+                form.append('dirData',fs.createReadStream(filePath),filePath.replace(path,''));
             }
+
+            /* Overriding form to maintain folder hirarchy */
+            form['_streams'] = this._util.overrideFormFilename(form,path,allFilesOfFolder);
 
             form.append('path',options.path || actualFolderName);
             if(this._util.isDefined(options.path)) {

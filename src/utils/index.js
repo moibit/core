@@ -10,5 +10,6 @@ module.exports = {
         return (baseUrl + _constants.MoibitPath)
     },
     getFilesOfFolder : require('./getFilesOfFolder'),
-    writeToFile : require('./writeStringToFile')
+    writeToFile : require('./writeStringToFile'),
+    overrideFormFilename : require('./overrideFormFileName')
 }
