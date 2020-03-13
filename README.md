@@ -7,11 +7,11 @@
 [![Chat on Telegram](https://img.shields.io/badge/Telegram-MoiBit%20Telegram%20community-blue)](https://t.me/moibit)
 [![Follow us on Twitter](https://img.shields.io/badge/Twitter-MoiBit%20Twitter-blue?style=social&logo=twitter)](https://twitter.com/moibitio)
 
-Core module of MoiBitJS to interact with [MoiBit](https://www.moibit.io) ,a decentralized cloud storage.
+Core module of MoiBitJS to interact with [MoiBit](https://www.moibit.io) , a decentralized cloud storage.
 
-This library will help _**Authorized MoiBit Developers**_ to store , read , delete , pin , unpin , detail the file/folder using MoiBit as their storage platform
+This library will help _**authenticated MoiBit Developers**_ to store , read , delete , pin , unpin and get details about a  file/folder using MoiBit as their storage platform
 
-_Click [here](https://account.moibit.io) to get authorized in MoiBit. You will be getting **API_KEY , API_SECRET , URL**_  after successful signup.
+Click [here](https://account.moibit.io) to get your MoiBit credentials. You will be getting **API_KEY , API_SECRET  and a URL**  after successful signup.
 
 ## Install
 
@@ -61,8 +61,9 @@ npm install --save @moibitjs/core
 
 #### new MoiBit(url,accessToken)
 
-This constructor is to wrap files module with url and access token , so that you don't need to send access token in every call. However authentication will be happen for every call.
--  <code>url</code> the url you got after signup
+This constructor is to wrap the files module with a URL and an access token , so that you don't need to send an access token in every call.
+
+-  <code>url</code> the URL you got after signup
 -  <code>accessToken</code> is an object with _API_KEY_ and _API_SECRET_ as keys
 ```js
 let files = new MoiBit(<YOUR_URL>,{
@@ -82,7 +83,7 @@ Adds file of any type to MoiBit
 
 -  <code>options</code>
 
-	-  `createFolders` is a boolean value , this option is needed. Otherwise, if a path specified in fileName does not exist, the operation will fail. Default:"true"
+	-  `createFolders` is a boolean value. If it is false and if a path specified in fileName does not exist, the operation will fail. Default:"true" 
 
 	-  `pinVersion` is a boolean value which ensures that the version of the file uploaded won't be unpinned (and become eligible for garbage collection) when another version of the same file is uploaded (in the future). Default:"false"	
 
@@ -110,9 +111,9 @@ await  files.addFolder(filesArray,{path:'/testFolder'};
 <a name="addFileFromFs"></a>
 #### files.addFileFromFs(path,options)
 
-This call is meant to be work in node environment. This works similar to <a  href="#addFile"><code>files.<b>addFile()</b></code></a> but local path of the file need to be passed instead of direct file
+This call is meant to work in the node environment. This works similar to <a  href="#addFile"><code>files.<b>addFile()</b></code></a> but the local path of the file needs to be passed instead of passing the file directly
 
--  <code>path</code> Absolute path from the FileSystem	
+-  <code>path</code> Absolute path from the file system	
 
 ```js
 await  files.addFileFromFs('local_path_of_the_file',{pinVersion:true};
@@ -121,9 +122,9 @@ await  files.addFileFromFs('local_path_of_the_file',{pinVersion:true};
 <a name="addFolderFromFs"></a>
 #### files.addFolderFromFs(path,options)
 
-This call is meant to be work in node environment. This works similar to <a  href="#addFolder"><code>files.<b>addFile()</b></code></a> but local path of the folder need to be passed instead of direct folder
+This call is meant to work in the node environment. This works similar to <a  href="#addFolder"><code>files.<b>addFolder()</b></code></a> but the local path of the folder need to be passed instead of direct folder
 
--  <code>path</code> Absolute path from the FileSystem	
+-  <code>path</code> Absolute path from the file system	
 
 ```js
 await  files.addFolderFromFs('local_path_of_the_folder',{path:'/testFolder'};
@@ -138,7 +139,7 @@ Write string content to a file. The content of an existing file gets appended to
 -  <code>text</code> Text or JSON content to add	
 -  <code>options</code>
 	-`create` ,create a new file if the file to which string content needs to be appended does not exist. Default: "false"	
-	-  `createFolders` is a boolean value , this option is needed. Otherwise, if a path specified in fileName does not exist, the operation will fail. Default:"true"
+	- `createFolders` is a boolean value. If this option is set to false and if a path specified in fileName does not exist, the operation will fail. Default:"true" 
 
 	-  `pinVersion` is a boolean value which ensures that the version of the file uploaded won't be unpinned (and become eligible for garbage collection) when another version of the same file is uploaded (in the future). Default:"false"	
 	
@@ -211,7 +212,7 @@ Read a file that has been added in given responseType
 
 - `responseType` can be anything among
 
-	- _arraybuffer , document , json , text , stream_
+	- _arraybuffer,document,json,text,stream_
 
 	- _blob - browser only_
 
@@ -228,7 +229,7 @@ Read a file by its hash in given responseType
 
 - `responseType` can be anything among
 
-	- _arraybuffer , document , json , text , stream_
+	- _arraybuffer,document,json,text,stream_
 
 	- _blob - browser only_
 
@@ -268,9 +269,9 @@ await files.removePin({filename : '/2020/sales/employee_salary.txt'});
 
 #### files.storageDetails(unit)
 
-Returns all the storage details of the particular account (you did init with) in specific Unit.
+Returns all the storage details of the particular account (you initialize with) in a specific Unit.
 
-- `unit` is a short hand notation of storage unit. It can be _B , KB , MB , GB , TB (case insensitive)_
+- `unit` is a short hand notation of storage unit. It can be _B,KB,MB,GB,TB(case insensitive)_
 
 ```js
 await files.storageDetails('mb');
@@ -288,7 +289,7 @@ await files.storageDetails('mb');
 
 ## Support
 
-If you need more clarifications, feel free to join our Telegram or Slack community channels. You can also write us an email at [hello@moibit.io](mailto:hello@moibit.io) or refer to our [API docs](https://apidocs.moibit.io)
+If you need more clarifications, feel free to join our Telegram or Slack community channels. You can also write us an email at [hello@moibit.io](mailto:hello@moibit.io) or refer to our [API docs](https://apidocs.moibit.io).
 
 ## License
 
