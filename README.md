@@ -7,11 +7,11 @@
 [![Chat on Telegram](https://img.shields.io/badge/Telegram-MoiBit%20Telegram%20community-blue)](https://t.me/moibit)
 [![Follow us on Twitter](https://img.shields.io/badge/Twitter-MoiBit%20Twitter-blue?style=social&logo=twitter)](https://twitter.com/moibitio)
 
-Core module of MoiBitJS to interact with [MoiBit](https://www.moibit.io) off-chain decentralized storage platform.
+Core module of MoiBitJS to interact with [MoiBit](https://www.moibit.io) , a decentralized cloud storage.
 
-This library will help _**Authorized Dapp Developers**_ to store , read , delete , pin , unpin , detail the file(s) using MoiBit as their storage platform
+This library will help _**authenticated MoiBit Developers**_ to store , read , delete , pin , unpin and get details about a  file/folder using MoiBit as their storage platform
 
-_Click [here](https://account.moibit.io) to get authorized  in MoiBit. You will be getting **API_KEY , API_SECRET , URL**_  after successful signup.
+Click [here](https://account.moibit.io) to get your MoiBit credentials. You will be getting **API_KEY , API_SECRET  and a URL**  after successful signup.
 
 ## Install
 
@@ -40,14 +40,20 @@ npm install --save @moibitjs/core
 ### Functions
 
 -  <a  href="#initialize"><code>new MoiBit()</code></a>
--  <a  href="#addFile"><code>files.<b>add()</b></code></a>
--  <a  href="#readFile"><code>files.<b>read()</b></code></a>
--  <a  href="#readFromHash"><code>files.<b>readFromHash()</b></code></a>
+-  <a  href="#addFile"><code>files.<b>addFile()</b></code></a>
+-  <a  href="#addFolder"><code>files.<b>addFolder()</b></code></a>
+-  <a  href="#addFileFromFs"><code>files.<b>addFileFromFs()</b></code></a>
+-  <a  href="#addFolderFromFs"><code>files.<b>addFolderFromFs()</b></code></a>
+-  <a  href="#addNotes"><code>files.<b>addNotes()</b></code></a>
+-  <a  href="#pinFile"><code>files.<b>addPin()</b></code></a>
+-  <a  href="#filedetail"><code>files.<b>fileStats()</b></code></a>
+-  <a  href="#getVersions"><code>files.<b>getVersions()</b></code></a>
 -  <a  href="#listFiles"><code>files.<b>list()</b></code></a>
+-  <a  href="#mkdir"><code>files.<b>mkdir()</b></code></a>
+-  <a  href="#readFile"><code>files.<b>read()</b></code></a>
+-  <a  href="#readFromHash"><code>files.<b>readFileByHash()</b></code></a>
 -  <a  href="#removeFile"><code>files.<b>remove()</b></code></a>
--  <a  href="#pinFile"><code>files.<b>pin()</b></code></a>
--  <a  href="#unpinFile"><code>files.<b>unpin()</b></code></a>
--  <a  href="#filedetail"><code>files.<b>filedetail()</b></code></a>
+-  <a  href="#unpinFile"><code>files.<b>removePin()</b></code></a>
 -  <a  href="#storageDetails"><code>files.<b>storageDetails()</b></code></a>
 ---
 
@@ -55,8 +61,9 @@ npm install --save @moibitjs/core
 
 #### new MoiBit(url,accessToken)
 
-This constructor is to wrap files module with url and access token , so that you don't need to send access token in every call. However authentication will be happen for every call.
--  <code>url</code> the url you got after signup
+This constructor is to wrap the files module with a URL and an access token , so that you don't need to send an access token in every call.
+
+-  <code>url</code> the URL you got after signup
 -  <code>accessToken</code> is an object with _API_KEY_ and _API_SECRET_ as keys
 ```js
 let files = new MoiBit(<YOUR_URL>,{
@@ -66,136 +73,205 @@ let files = new MoiBit(<YOUR_URL>,{
 ```
 
 <a  name="addFile"></a>
+#### files.addFile(file,path,options)
 
-#### files.add(file,path,options)
+Adds file of any type to MoiBit
 
-Adds file of any type to MoiBit and returns back multi-hash of the file.
+-  <code>file</code> The actual file you are uploading
 
--  <code>file</code> can be window file object or stream
-
--  <code>path</code> is an absolute path in your files directory at which you want the file to be inserted.
+-  <code>fileName</code> File name or path
 
 -  <code>options</code>
 
-	-  `createFolders` is a boolean value which specifies to create a folder/not if it is not existing , that was mentioned in above path attribute (_default : true_)
+	-  `createFolders` is a boolean value. If it is false and if a path specified in fileName does not exist, the operation will fail. Default:"true" 
 
-	-  `pinVersion` is a boolean value which tells to pin the file while adding.(_default : false_)
+	-  `pinVersion` is a boolean value which ensures that the version of the file uploaded won't be unpinned (and become eligible for garbage collection) when another version of the same file is uploaded (in the future). Default:"false"	
 
 ```js
-await  files.add(fileObject,'parent1/folder2/file3.txt'});
+await  files.addFile(fileObject,'parent1/folder2/file3.txt');
+```
+
+<a name="addFolder"></a>
+#### files.addFolder(files,options)
+
+Add a non-empty directory with file(s) and nested non-empty directories inside it. If the path where the directory should be added is not specified, the directory will be added at the root path.
+
+-  <code>dirData</code> The actual non-empty folder you are uploading.
+
+-  <code>path</code> The path where the directory should be uploaded. Default: "/"	
+
+-  <code>options</code>
+
+	-  `pinVersion` is a boolean value which ensures that the version of the file uploaded won't be unpinned (and become eligible for garbage collection) when another version of the same file is uploaded (in the future). Default:"false"	
+
+```js
+await  files.addFolder(filesArray,{path:'/testFolder'};
+```
+
+<a name="addFileFromFs"></a>
+#### files.addFileFromFs(path,options)
+
+This call is meant to work in the node environment. This works similar to <a  href="#addFile"><code>files.<b>addFile()</b></code></a> but the local path of the file needs to be passed instead of passing the file directly
+
+-  <code>path</code> Absolute path from the file system	
+
+```js
+await  files.addFileFromFs('local_path_of_the_file',{pinVersion:true};
+```
+
+<a name="addFolderFromFs"></a>
+#### files.addFolderFromFs(path,options)
+
+This call is meant to work in the node environment. This works similar to <a  href="#addFolder"><code>files.<b>addFolder()</b></code></a> but the local path of the folder need to be passed instead of direct folder
+
+-  <code>path</code> Absolute path from the file system	
+
+```js
+await  files.addFolderFromFs('local_path_of_the_folder',{path:'/testFolder'};
+```
+
+<a name="addNotes"></a>
+#### files.addNotes(notes,path,options)
+
+Write string content to a file. The content of an existing file gets appended to the last byte of the existing content. String content can be added to a new file by setting the create field to true.
+
+-  <code>fileName</code> File name and path
+-  <code>text</code> Text or JSON content to add	
+-  <code>options</code>
+	-`create` ,create a new file if the file to which string content needs to be appended does not exist. Default: "false"	
+	- `createFolders` is a boolean value. If this option is set to false and if a path specified in fileName does not exist, the operation will fail. Default:"true" 
+
+	-  `pinVersion` is a boolean value which ensures that the version of the file uploaded won't be unpinned (and become eligible for garbage collection) when another version of the same file is uploaded (in the future). Default:"false"	
+	
+	
+```js
+await  files.addNotes('Welcome to MoiBit','/invitation.txt',{create : true};
+```
+
+<a  name="pinFile"></a>
+#### files.addPin(options)
+Pin to keep this version of the file accessible by hash even after a new version of the file is added.
+
+
+- `options`
+
+	- `hash` The hash of the content requested to pin	
+
+	- `fileName` The name of the file, with the fully qualified path, that you're attempting to pin. Will only pin the latest version of the file.
+
+```js
+await files.addPin({hash : 'QmAs...'})
+```
+<a  name="filedetail"></a>
+#### files.fileStats(path)
+
+View the hash, size and parent folder of a file or a folder. Also view the pin status and creation time in case of a file.
+
+```js
+await files.fileStats('/2020/sales/employee_salary.txt');
+```
+
+<a  name="getVersions"></a>
+#### files.getVersions(fileName)
+
+View details of all available versions of a file. The response will show file versions in reverse chronological order. Only files can have versions, not folders.
+
+
+```js
+await files.getVersions('/2020/sales/employee_salary.txt');
+```
+<a  name="listFiles"></a>
+#### files.list(path)
+
+List files and sub-folders in the specified folder.
+
+- `path` The name of the folder with the fully qualified path. Defaults to the root folder ‘/’	
+
+```js
+await files.list('/2020/sales');
+```
+
+<a name="mkdir"></a>
+#### files.mkdir(path)
+
+Create an empty directory. Any folders that are a part of the path - and don't exist - will also be created.
+
+
+- `path` The fully qualified path at which you're attempting to create a new directory.
+
+```js
+await files.mkdir('2020/sales');
 ```
 
 <a  name="readFile"></a>
+#### files.read(fileName,responseType)
 
-#### files.read(path,responseType)
+Read a file that has been added in given responseType
 
-Returns file in mentioned response type from its file name.
-
-**_File modified off-chain_**
-
-- `path` is an absolute path
+- `fileName` The name of the file, with the fully qualified path, that you're attempting to read
 
 - `responseType` can be anything among
 
-	- _arraybuffer , document , json , text , stream_
+	- _arraybuffer,document,json,text,stream_
 
 	- _blob - browser only_
 
 ```js
-await files.read('parent1/folder2/file3.txt','blob');
+await files.read('/2020/sales/employee_salary.txt','blob');
 ```
 
 <a  name="readFromHash"></a>
+#### files.readFileByHash(hash,responseType)
 
-#### files.readFromHash(hash,responseType)
+Read a file by its hash in given responseType
 
-Returns file in mentioned response type from its hash.
-
-- `hash` is multihash of the file
+- `hash` The hash of the content for the file requested.	
 
 - `responseType` can be anything among
 
-	- _arraybuffer , document , json , text , stream_
+	- _arraybuffer,document,json,text,stream_
 
 	- _blob - browser only_
 
 ```js
-await files.readFromHash('Qmbg......','json');
-```
-
-<a  name="listFiles"></a>
-
-#### files.list(path)
-
-Returns array of files within the folder mentioned.
-
-- `path` is absolute path of the folder, if path is undefined or not mentioned will return all the files in your root folder.
-
-```js
-await files.list('parent1/folder2');
+await files.readFileByHash('Qmbg......','json');
 ```
 
 <a  name="removeFile"></a>
-
 #### files.remove(path)
 
-Removes the file from MoiBit and returns back the acknowledgement
+Remove a file or folder. In case of a file, only the most recent version of the file will be removed by default. In case of a folder, all the files and nested folders inside it will also be removed.
 
-- `path` is absolute path of the file
-
+- `path` The name of the file or folder with the fully qualified path, that you're attempting to remove	
+-  <code>options</code>
+	-`recursive` Recursively remove directories. Default:"false"
+	- `allVersions` Remove all versions of this file. Default:"false"
 ```js
-await files.remove('parent1/folder2/file2.txt');
+await files.remove('/2020/sales',{recursive : true});
 ```  
-
-<a  name="pinFile"></a>
-
-#### files.pin(options)
-
-Pins the file in MoiBit , so that garbage Collector won't collect the file even though the file was not accessed for a long time.
-
-- `options`
-
-	- `filename` absolute file name
-
-	- `hash` is the multihash of the file
-
-```js
-await files.pin({hash : 'QmAs...'})
-```
 
 <a  name="unpinFile"></a>
 
-#### files.unpin(options)
-
-Unpins the pinned file in MoiBit , so that garbage Collector got the access to collect the file which was not accessed for a long time.
+#### files.removePin(options)
+Remove pin to make sure this version of the file is removed when another version of the same file is added. Removing pin also reduces the replication factor of the file.
 
 - `options`
 
-	- `filename` absolute file name
+	- `hash` The hash of the content to be unpinned
 
-	- `hash` is the multihash of the file
-
-```js
-await files.unpin({filename : 'parent1/folder2/file3.txt'});
-```
-
-<a  name="filedetail"></a>
-
-#### files.filedetail(path)
-
-Returns complete detail about the file
+	- `fileName` The name of the file, with the fully qualified path, that you're attempting to unpin. Will only unpin the latest version of the file.
 
 ```js
-await files.filedetail('parent1/folder2/file3.txt');
+await files.removePin({filename : '/2020/sales/employee_salary.txt'});
 ```
 
 <a  name="storageDetails"></a>
 
 #### files.storageDetails(unit)
 
-Returns all the storage details of the particular account (you did init with) in specific Unit.
+Returns all the storage details of the particular account (you initialize with) in a specific Unit.
 
-- `unit` is a short hand notation of storage unit. It can be _B , KB , MB , GB , TB (case insensitive)_
+- `unit` is a short hand notation of storage unit. It can be _B,KB,MB,GB,TB(case insensitive)_
 
 ```js
 await files.storageDetails('mb');
@@ -208,11 +284,12 @@ await files.storageDetails('mb');
 
 ## Review and code standards
 
-1. Ganesh Prasad Kumble
+1. [Ayush Gupta](https://github.com/ayushgupta0610)
+2. [Ganesh Prasad Kumble](https://github.com/0zAnd1z)
 
 ## Support
 
-If you need more clarifications, feel free to join our Telegram or Slack community channels. You can also write us an email at [hello@moibit.io](mailto:hello@moibit.io)
+If you need more clarifications, feel free to join our Telegram or Slack community channels. You can also write us an email at [hello@moibit.io](mailto:hello@moibit.io) or refer to our [API docs](https://apidocs.moibit.io).
 
 ## License
 
