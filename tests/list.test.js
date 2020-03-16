@@ -3,9 +3,7 @@ describe('list',function() {
         var bool = false
         try {
             let result = await this._sdk.list()
-            console.log('List of files under root : \n')
-            console.log(result)
-            bool = result!== undefined
+            bool = result !== undefined
         }   
         catch(e) {
             console.log(e)
@@ -15,11 +13,12 @@ describe('list',function() {
     it(": this case is to list all the files from folder which is not there",async function() {
         var bool = false
         try {
-            await this._sdk.list('fakeroot/fakefolder')
+            let result = await this._sdk.list('fakeroot/fakefolder')
+            console.log("Negative Case : Trying to list the files from `fakepath/fakefolder` which is not existing returns 404\n")
+            bool = result.body.meta['code'] === 404  
         }   
         catch(e) {
-            console.log("Negative Case : Trying to list the files from `fakepath/fakefolder` which is not existing returns 404\n")
-            bool = e.status === 404            
+            console.log(e)          
         }
         expect(bool).toBe(true)
     })
