@@ -13,8 +13,11 @@ module.exports = async function(hasH,responseType) {
     let payload = {
         hash : hasH
     }
+    let readOptions = {
+        responseType : !this._util.isDefined(responseType) ? 'json' : responseType
+    }
     try {
-        return await this._fileApi.send('POST','readfilebyhash',payload,responseType)
+        return await this._fileApi.send('POST','readfilebyhash',payload,readOptions)
     }catch(e) {
         return e
     }

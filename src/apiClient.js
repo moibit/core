@@ -31,7 +31,7 @@ module.exports = class {
      * data or an Error with the reason.
      */
     send(method, url, payload = {},options={}) {
-        let requiredResponseType;
+        let requiredResponseType = options.responseType;
         let requestedRoute = (this.baseUrl+'/'+url).trim()
         let authenticatedHeaders = {}
 
@@ -48,9 +48,6 @@ module.exports = class {
                 str = index+1 !== keys.length ? str + '&' : str
             })
             requestedRoute = requestedRoute + str
-        }
-        if(!isDef(options.responseType)) {
-            requiredResponseType = 'json'
         }
         if(isDef(options.injectFormHeaders)) {
             if(options.injectFormHeaders) {

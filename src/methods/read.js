@@ -13,9 +13,12 @@ module.exports = async function(filename,responseType) {
     let payload = {
         fileName : filename
     }
+    let readOptions = {
+        responseType : !this._util.isDefined(responseType) ? 'json' : responseType
+    }
     try {
-        return await this._fileApi.send('POST','readfile',payload,responseType)
+        return await this._fileApi.send('POST','readfile',payload,readOptions)
     }catch(e) {
-        return e
+        return 
     }
 }

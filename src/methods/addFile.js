@@ -13,9 +13,9 @@ module.exports = async function(file,options={}) {
     if (typeof window !== 'undefined') {
         var form = new FormData()
         form.append('file',file)
-        form.append('fileName','/'+fileOptions.fileName || '/'+file.name)
-        form.append('createFolders',fileOptions.createFolders || true)
-        form.append('pinVersion',fileOptions.pinVersion || false)
+        form.append('fileName','/'+options.fileName || '/'+file.name)
+        form.append('createFolders',options.createFolders || true)
+        form.append('pinVersion',options.pinVersion || false)
         return await this._fileApi.send('POST','writefile',form)
     }
     else {

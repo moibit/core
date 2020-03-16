@@ -6,7 +6,7 @@
   "name": "@moibitjs/core",
   "version": "1.0.0",
   "description": "The Core module of moibitjs to interact with MoiBit off-chain Storage platform",
-  "main": "./src/sdk.js",
+  "main": "./src/index.js",
   "scripts": {
     "test": "jasmine tests/*.js"
   },
