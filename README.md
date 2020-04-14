@@ -33,7 +33,7 @@ npm install --save @moibitjs/core
 		'API_KEY' : '<your-api-key>', // the api key you got after signing up to moibit
 		'API_SECRET' : '<your-api-secret>'  // the api key you got after signing up to moibit
 	});
-	console.log(await files.storageDetails('GB'));
+	console.log(await files.storageUsed('GB'));
 })()
 ```
 
@@ -54,7 +54,7 @@ npm install --save @moibitjs/core
 -  <a  href="#readFromHash"><code>files.<b>readFileByHash()</b></code></a>
 -  <a  href="#removeFile"><code>files.<b>remove()</b></code></a>
 -  <a  href="#unpinFile"><code>files.<b>removePin()</b></code></a>
--  <a  href="#storageDetails"><code>files.<b>storageDetails()</b></code></a>
+-  <a  href="#storageUsed"><code>files.<b>storageUsed()</b></code></a>
 ---
 
 <a  name="initialize"></a>
@@ -265,16 +265,16 @@ Remove pin to make sure this version of the file is removed when another version
 await files.removePin({filename : '/2020/sales/employee_salary.txt'});
 ```
 
-<a  name="storageDetails"></a>
+<a  name="storageUsed"></a>
 
-#### files.storageDetails(unit)
+#### files.storageUsed(unit)
 
 Returns all the storage details of the particular account (you initialize with) in a specific Unit.
 
 - `unit` is a short hand notation of storage unit. It can be _B,KB,MB,GB,TB(case insensitive)_
 
 ```js
-await files.storageDetails('mb');
+await files.storageUsed('mb');
 ```
 
 ## Maintainers
