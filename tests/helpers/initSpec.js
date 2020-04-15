@@ -6,8 +6,8 @@ beforeEach(function() {
 
     /* MoiBit SDK initialization */
     this._sdk = new MoiBitSdk(creds.baseUrl,{
-        public : creds.public,
-        secret : creds.secret
+        api_key : creds.public,
+        api_secret : creds.secret
     })
 
     /* paths of testfiles */ 

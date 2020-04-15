@@ -30,8 +30,8 @@ npm install --save @moibitjs/core
 	const  files = new  MoiBit(
 		// the url you got after signing up to moibit
 		'<your-url>', {
-		'API_KEY' : '<your-api-key>', // the api key you got after signing up to moibit
-		'API_SECRET' : '<your-api-secret>'  // the api key you got after signing up to moibit
+		api_key : '<your-api-key>', // the api key you got after signing up to moibit
+		api_scret : '<your-api-secret>'  // the api key you got after signing up to moibit
 	});
 	console.log(await files.storageUsed('GB'));
 })()

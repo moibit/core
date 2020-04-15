@@ -13,7 +13,12 @@ module.exports = class {
     constructor(baseUrl,accessToken) {
         if (!isUrl(baseUrl)) 
             throw new Error({message:'The base URL provided is not valid'})
-
+        if(accessToken.api_key == '' || accessToken.api_key == undefined) {
+            throw new Error({message:'Invalid api key'})
+        }
+        if(accessToken.api_secret == '' || accessToken.api_secret == undefined) {
+            throw new Error({message:'Invalid api secret'})
+        }
         this.baseUrl = baseUrl
         this.accessToken = accessToken
     }
@@ -35,8 +40,8 @@ module.exports = class {
         let requestedRoute = (this.baseUrl+'/'+url).trim()
         let authenticatedHeaders = {}
 
-        authenticatedHeaders['api_key'] = this.accessToken.public || ''
-        authenticatedHeaders['api_secret'] = this.accessToken.secret || ''
+        authenticatedHeaders['api_key'] = this.accessToken.api_key || ''
+        authenticatedHeaders['api_secret'] = this.accessToken.api_secret || ''
 
         if (method === 'POST') {
             authenticatedHeaders['Content-Type'] = 'application/json'
