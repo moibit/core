@@ -138,14 +138,15 @@ Write string content to a file. The content of an existing file gets appended to
 -  <code>fileName</code> File name and path
 -  <code>text</code> Text or JSON content to add	
 -  <code>options</code>
-	-`create` ,create a new file if the file to which string content needs to be appended does not exist. Default: "false"	
+
+	-`create` is a string value. create a new file if the file to which string content needs to be appended does not exist. Default: "false"	
 	- `createFolders` is a boolean value. If this option is set to false and if a path specified in fileName does not exist, the operation will fail. Default:"true" 
 
 	-  `pinVersion` is a boolean value which ensures that the version of the file uploaded won't be unpinned (and become eligible for garbage collection) when another version of the same file is uploaded (in the future). Default:"false"	
 	
 	
 ```js
-await  files.addNotes('Welcome to MoiBit','/invitation.txt',{create : true};
+await  files.addNotes('Welcome to MoiBit','/invitation.txt',{create : 'true'};
 ```
 
 <a  name="pinFile"></a>
