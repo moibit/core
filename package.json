@@ -4,7 +4,7 @@
   ],
   "author": "its-VSP",
   "name": "@moibitjs/core",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "The Core module of moibitjs to interact with MoiBit off-chain Storage platform",
   "main": "./src/index.js",
   "scripts": {
